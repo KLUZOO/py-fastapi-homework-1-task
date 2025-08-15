@@ -14,28 +14,9 @@ router = APIRouter()
 @router.get("/movies/", response_model=MovieListResponseSchema)
 async def read_movies(
         page: int = Query(1, ge=1),
-        per_page: int = Query(10, ge=1),
+        per_page: int = Query(10, ge=1, le=20),
         db: AsyncSession = Depends(get_db)
 ):
-    if not isinstance(page, int):
-        raise HTTPException(
-            status_code=422,
-            detail=[{"msg": "Page must be an integer"}]
-        )
-    if not isinstance(per_page, int):
-        raise HTTPException(
-            status_code=422,
-            detail=[{"msg": "Page must be an integer"}]
-        )
-    if not (1 <= per_page <= 20):
-        raise HTTPException(
-            status_code=422, detail="<UNK>"
-        )
-
-    if not (page >= 1):
-        raise HTTPException(
-            status_code=422, detail="<UNK>"
-        )
     total_items = await db.execute(select(func.count()).select_from(MovieModel))
     total_items = total_items.scalar_one()
     total_pages = ceil(total_items / per_page)
