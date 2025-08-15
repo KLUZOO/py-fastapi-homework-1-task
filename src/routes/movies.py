@@ -35,9 +35,9 @@ async def read_movies(
 
     return MovieListResponseSchema(
         movies=movies,
-        prev_page=f"http://localhost:8000/api/v1/theater/movies?page={page - 1}"
+        prev_page=f"/theater/movies/?page={page - 1}"
                   f"&per_page={per_page}" if page > 1 else None,
-        next_page=f"http://localhost:8000/api/v1/theater/movies?page={page + 1}"
+        next_page=f"/theater/movies/?page={page + 1}"
                   f"&per_page={per_page}" if page < total_pages else None,
         total_pages=total_pages,
         total_items=total_items
